@@ -94,14 +94,7 @@ stage('Build') {
 
 stage('QA') {
   // Allow a supplied a test filter, but provide a reasonable default.
-  String filter;
-  if (env.TEST_FILTER == null) {
-    // The set of default tests includes unit and integration tests, but
-    // not ones tagged #slower, #slowest.
-    filter = '-i -g \'#slowe\''
-  } else {
-    filter = env.TEST_FILTER
-  }
+  //String filter = = '-g \'#slowe\''
 
   def axes = [
     // Node8x:{ setupNodeAndTest('lts/carbon', filter) }, // 8.x LTS
@@ -109,7 +102,7 @@ stage('QA') {
     // Node:{ setupNodeAndTest('node', filter) }, // Current
     // Test IAM on the current Node.js version. Filter out unit tests and the
     // slowest integration tests.
-    Iam: { setupNodeAndTest('node', '-i -g \'#unit|#slowe\'', 'test-iam') }
+    Iam: { setupNodeAndTest('node', '-g \'largedb\'', 'test-iam') }
   ]
   // Add unreliable network tests if specified
   // if (env.RUN_TOXY_TESTS && env.RUN_TOXY_TESTS.toBoolean()) {
