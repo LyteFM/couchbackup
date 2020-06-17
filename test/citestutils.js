@@ -162,6 +162,11 @@ function testBackup(params, databaseName, outputStream, callback) {
         args.push('--iam-api-key');
         args.push(params.opts.iamApiKey);
       }
+      if (params.opts.iamTokenUrl) {
+        // FOR TE branch only
+        args.push('--iam-token-url');
+        args.push(params.opts.iamTokenUrl);
+      }
     }
 
     // Note use spawn not fork for stdio options not supported with fork in Node 4.x

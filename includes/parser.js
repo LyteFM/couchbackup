@@ -40,6 +40,8 @@ function parseBackupArgs() {
       cliutils.getUsage('name of the database to backup', defaults.db))
     .option('-k, --iam-api-key <API key>',
       cliutils.getUsage('IAM API key to access the Cloudant server'))
+    .option('-ku, --iam-token-url <API key>',
+      cliutils.getUsage('used with "iamApiKey" to override the default URL for retrieving IAM tokens'))
     .option('-l, --log <file>',
       cliutils.getUsage('file to store logging information during backup; invalid in "shallow" mode', 'a temporary file'),
       path.normalize)
@@ -102,6 +104,8 @@ function parseRestoreArgs() {
       cliutils.getUsage('name of the new, existing database to restore to', defaults.db))
     .option('-k, --iam-api-key <API key>',
       cliutils.getUsage('IAM API key to access the Cloudant server'))
+    .option('-ku, --iam-token-url <API key>',
+      cliutils.getUsage('used with "iamApiKey" to override the default URL for retrieving IAM tokens'))
     .option('-p, --parallelism <n>',
       cliutils.getUsage('number of HTTP requests to perform in parallel when restoring a backup', defaults.parallelism),
       Number)

@@ -231,6 +231,7 @@ used.
 * `--output` - same as `COUCH_OUTPUT`
 * `--mode` - same as `COUCH_MODE`
 * `--iam-api-key` - same as `CLOUDANT_IAM_API_KEY`
+* `--iam-token-url` - same as `CLOUDANT_IAM_TOKEN_URL`
 
 ## Using programmatically
 
