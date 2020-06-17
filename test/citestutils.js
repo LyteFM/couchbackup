@@ -163,7 +163,6 @@ function testBackup(params, databaseName, outputStream, callback) {
         args.push(params.opts.iamApiKey);
       }
       if (params.opts.iamTokenUrl) {
-        // FOR TE branch only
         args.push('--iam-token-url');
         args.push(params.opts.iamTokenUrl);
       }
@@ -569,6 +568,9 @@ function augmentParamsWithApiKey(params) {
       params.opts = {};
     }
     params.opts.iamApiKey = process.env.COUCHBACKUP_TEST_IAM_API_KEY;
+    if (process.env.CLOUDANT_IAM_TOKEN_URL) {
+      params.opts.iamTokenUrl = process.env.CLOUDANT_IAM_TOKEN_URL;
+    }
   }
 }
 
