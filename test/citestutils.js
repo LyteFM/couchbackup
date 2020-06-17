@@ -564,6 +564,9 @@ function augmentParamsWithApiKey(params) {
       params.opts = {};
     }
     params.opts.iamApiKey = process.env.COUCHBACKUP_TEST_IAM_API_KEY;
+    if (process.env.CLOUDANT_IAM_TOKEN_URL) {
+      params.opts.iamTokenUrl = process.env.CLOUDANT_IAM_TOKEN_URL;
+    }
   }
 }
 
