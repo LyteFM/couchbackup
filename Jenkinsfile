@@ -32,8 +32,9 @@ def getEnvForSuite(suiteName) {
       envVars.add("TEST_TIMEOUT_MULTIPLIER=50")
       break
       case 'test-iam':
-        envVars.add("COUCH_URL=https://${env.DB_USER}.cloudant.com")
+        envVars.add("COUCH_URL=https://fdbcore-test-us-south-01-user1.cloudant.com")
         envVars.add("COUCHBACKUP_TEST_IAM_API_KEY=${env.IAM_API_KEY}")
+        envVars.add("CLOUDANT_IAM_TOKEN_URL=https://iam.test.cloud.ibm.com/identity/token")
         break
     default:
       error("Unknown test suite environment ${suiteName}")
@@ -52,7 +53,7 @@ def setupNodeAndTest(version, filter='', testSuite='test') {
     // Run tests using creds
     withCredentials([usernamePassword(credentialsId: 'clientlibs-test', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD'),
                       usernamePassword(credentialsId: 'artifactory', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PW'),
-                      string(credentialsId: 'clientlibs-test-iam', variable: 'IAM_API_KEY')]) {
+                      string(credentialsId: 'cloudant-te-user1', variable: 'IAM_API_KEY')]) {
       withEnv(getEnvForSuite("${testSuite}")) {
         try {
           // For the IAM tests we want to run the normal 'test' suite, but we
@@ -103,17 +104,17 @@ stage('QA') {
   }
 
   def axes = [
-    Node8x:{ setupNodeAndTest('lts/carbon', filter) }, // 8.x LTS
-    Node10x:{ setupNodeAndTest('lts/dubnium', filter) }, // 10.x Active
-    Node:{ setupNodeAndTest('node', filter) }, // Current
+    // Node8x:{ setupNodeAndTest('lts/carbon', filter) }, // 8.x LTS
+    // Node10x:{ setupNodeAndTest('lts/dubnium', filter) }, // 10.x Active
+    // Node:{ setupNodeAndTest('node', filter) }, // Current
     // Test IAM on the current Node.js version. Filter out unit tests and the
     // slowest integration tests.
     Iam: { setupNodeAndTest('node', '-i -g \'#unit|#slowe\'', 'test-iam') }
   ]
   // Add unreliable network tests if specified
-  if (env.RUN_TOXY_TESTS && env.RUN_TOXY_TESTS.toBoolean()) {
-    axes.Network = { setupNodeAndTest('node', '', 'toxytests/toxy') }
-  }
+  // if (env.RUN_TOXY_TESTS && env.RUN_TOXY_TESTS.toBoolean()) {
+  //  axes.Network = { setupNodeAndTest('node', '', 'toxytests/toxy') }
+  // }
   // Run the required axes in parallel
   parallel(axes)
 }

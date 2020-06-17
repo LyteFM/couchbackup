@@ -29,6 +29,9 @@ module.exports = function(db, options) {
     function(callback) {
       // Note, include_docs: true is set automatically when using the
       // fetch function.
+
+      // page_size is required for Transaction Engine.  Max size is 2000 per page.
+      // var pageSize = options.bufferSize ? options.bufferSize <= 2000 : 2000;
       var opts = { limit: options.bufferSize };
 
       // To avoid double fetching a document solely for the purposes of getting
