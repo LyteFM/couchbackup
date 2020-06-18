@@ -102,7 +102,7 @@ stage('QA') {
     // Node:{ setupNodeAndTest('node', filter) }, // Current
     // Test IAM on the current Node.js version. Filter out unit tests and the
     // slowest integration tests.
-    Iam: { setupNodeAndTest('node', '-g \'#unit\'', 'test-iam') }
+    Iam: { setupNodeAndTest('node', '-i -g \'#unit|#slowe\'', 'test-iam') }
   ]
   // Add unreliable network tests if specified
   // if (env.RUN_TOXY_TESTS && env.RUN_TOXY_TESTS.toBoolean()) {
