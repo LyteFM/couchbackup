@@ -16,7 +16,7 @@
 def getEnvForSuite(suiteName) {
   // Base environment variables
   def envVars = [
-    "COUCH_BACKEND_URL=https://fdbcore-test-us-south-01-user1.cloudant.com",
+    "COUCH_BACKEND_URL=https://${env.DB_USER}:${env.DB_PASSWORD}@${env.DB_USER}.cloudant.com",
     "DBCOMPARE_NAME=DatabaseCompare",
     "DBCOMPARE_VERSION=1.0.1",
     "NVM_DIR=${env.HOME}/.nvm"
@@ -51,7 +51,7 @@ def setupNodeAndTest(version, filter='', testSuite='test') {
     unstash name: 'built'
 
     // Run tests using creds
-    withCredentials([usernamePassword(credentialsId: 'clientlibs-test', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD'),
+    withCredentials([usernamePassword(credentialsId: 'cloudant-te-user1-basic', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD'),
                       usernamePassword(credentialsId: 'artifactory', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PW'),
                       string(credentialsId: 'cloudant-te-user1', variable: 'IAM_API_KEY')]) {
       withEnv(getEnvForSuite("${testSuite}")) {
