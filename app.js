@@ -220,7 +220,7 @@ module.exports = {
     const ee = new events.EventEmitter();
 
     // Set up the DB client
-    const backupDB = request.client(srcUrl, opts);
+    var backupDB = request.client(srcUrl, opts);
 
     // Validate the DB exists, before proceeding to backup
     proceedIfDbValid(backupDB, function(err) {
@@ -299,6 +299,8 @@ module.exports = {
           // event is emitted.
           targetStream.end('', 'utf8', emitFinished);
         }
+        // nullify backupDB object so GC can free space
+        backupDB = null;
       });
     });
     return ee;
